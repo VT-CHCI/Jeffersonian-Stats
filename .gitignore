@@ -34,3 +34,7 @@ nosetests.xml
 .mr.developer.cfg
 .project
 .pydevproject
+
+word\ sources/*.docx
+txt\ sources/*.txt
+results/*
