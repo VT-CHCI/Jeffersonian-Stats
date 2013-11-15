@@ -75,6 +75,9 @@ def determine_story_teller(txt):
     # print results
     results = [r for r in results if len(r)>0 ]
     # print results.group()
+    if len(results) < 1:
+        print "NO STORYTELLER MARKERS ("+",".join(codes.story_teller_markers)+") FOUND!"
+        return None
     return results[0]
 
 def get_all_speakers(txt):
@@ -156,7 +159,10 @@ def get_texts(filename):
     print filename
     print 'Total Word Count (full word and disfluency instances): ', total_word_count
     print 'Total Utterance Count (full stop, continuer, try-marker, and truncated ending instances): ', total_utterances
-    print 'Speaker: '+ determine_story_teller(raw_text)
+    the_speaker = determine_story_teller(raw_text)
+    if the_speaker is None:
+        return
+    print 'Speaker: ' + the_speaker
     for speaker in all_speakers:
         print get_participant_words_and_utterances(speaker, raw_text)
     print 'Listener Non-verbal Count ( "(*  *)"" instances, not including laughter)', get_listener_nv_count(raw_text)
@@ -169,6 +175,7 @@ if __name__ == '__main__':
     else:
         # print os.listdir(sys.argv[1])
         for fname in os.listdir(sys.argv[1]):
-            print "-"*60
-            # print os.path.join(sys.argv[1],fname)
-            get_texts(os.path.join(sys.argv[1],fname))
+            if fname.find('.DS_Store') < 0:
+                print "-"*60
+                # print os.path.join(sys.argv[1],fname)
+                get_texts(os.path.join(sys.argv[1],fname))
